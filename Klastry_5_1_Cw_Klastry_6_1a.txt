@@ -1,0 +1,3 @@
+1. Wynik jest prawie zawsze równy 0, ponieważ wytępuje błąd typu race condition - operacje counter += 1 oraz counter -= 1 nie wykonują się w jednym niepodzielnym kroku, gdy oby dwa działają jednocześnie przeplataja sie w niekontrolowany sposób, w jednym momencie obydwa wątki pobierają wartośc 0 ale zanim pierwszy zdąży zapisać 1, drugi wątek również pobierze 0 w wyniku tego jeden z wątków nadpisuje drugi i część operacji po prostu ginie.
+Chroniona musi być cała sekcja krytyczna czyli cała pętla modyfikująca współdzieloną zmienną, są to linie counter += 1 i counter -= 1.
+Wystarczy użyć jednej wspólnej blokady obu funkcji. Jeśli wątek pierwszy zablokuje zamek, drugi wątek bedzie musiał poczekać aż pierwszy go zwoni, dlatego operacja stanie sie bezpieczna.
